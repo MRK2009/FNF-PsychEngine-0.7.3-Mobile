@@ -5,7 +5,7 @@
       "type": "git",
       "dir": null,
       "ref": "main",
-      "url": "https://github.com/mcagabe19-stuff/lime-8.2.1"
+      "url": "https://github.com/MRK2009/lime-HomuHomu833"
     },
     {
       "name": "openfl",
@@ -17,7 +17,7 @@
       "type": "git",
       "dir": null,
       "ref": "5.5.0",
-      "url": "https://github.com/MobilePorting/flixel"
+      "url": "https://github.com/MRK2009/flixel"
     },
     {
       "name": "flixel-addons",
@@ -38,22 +38,20 @@
       "name": "hxcpp",
       "type": "git",
       "dir": null,
-      "ref": "master",
-      "url": "https://github.com/mcagabe19-stuff/hxcpp"
+      "ref": "333f482551dd13b003ef57dc7c047ab00bd52b94",
+      "url": "https://github.com/ShadowEngineTeam/hxcpp"
     },
     {
-      "name": "hxCodec",
-      "type": "git",
-      "dir": null,
-      "ref": "cafc58e9046505ff93fa659339808b53faa5d6f3",
-      "url": "https://github.com/polybiusproxy/hxCodec"
-    },
-    {
-      "name": "SScript",
+      "name": "hxvlc",
       "type": "git",
       "dir": null,
       "ref": "main",
-      "url": "https://github.com/mcagabe19-stuff/SScript-7.7.0"
+      "url": "https://github.com/MRK2009/hxvlc"
+    },
+    {
+      "name": "SScript",
+      "type": "haxelib",
+      "version": "7.7.0"
     },
     {
       "name": "tjson",
@@ -72,7 +70,7 @@
       "type": "git",
       "dir": null,
       "ref": "master",
-      "url": "https://github.com/MobilePorting/linc_luajit-0.7plus"
+      "url": "https://github.com/ShadowEngineTeam/linc_luajit"
     },
     {
       "name": "flxanimate",
@@ -80,13 +78,6 @@
       "dir": null,
       "ref": "dev",
       "url": "https://github.com/ShadowMario/flxanimate.git"
-    },
-    {
-      "name": "extension-androidtools",
-      "type": "git",
-      "dir": null,
-      "ref": "main",
-      "url": "https://github.com/MAJigsaw77/extension-androidtools"
     }
   ]
 }
