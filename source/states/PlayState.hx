@@ -37,13 +37,6 @@ import flixel.addons.display.FlxRuntimeShader;
 import openfl.filters.ShaderFilter;
 #end
 
-#if VIDEOS_ALLOWED
-#if (hxCodec >= "3.0.0") import hxcodec.flixel.FlxVideo as VideoHandler;
-#elseif (hxCodec >= "2.6.1") import hxcodec.VideoHandler as VideoHandler;
-#elseif (hxCodec == "2.6.0") import VideoHandler;
-#else import vlc.MP4Handler as VideoHandler; #end
-#end
-
 import objects.Note.EventNote;
 import objects.*;
 import states.stages.objects.*;
@@ -264,6 +257,8 @@ class PlayState extends MusicBeatState
 	// Callbacks for stages
 	public var startCallback:Void->Void = null;
 	public var endCallback:Void->Void = null;
+
+	#if VIDEOS_ALLOWED public var videoSprites:Array<VideoSpriteManager> = []; #end
 
 	public var luaTouchPad:TouchPad;
 
@@ -852,44 +847,28 @@ class PlayState extends MusicBeatState
 		char.y += char.positionArray[1];
 	}
 
-	public function startVideo(name:String)
+	public function startVideo(name:String) #if VIDEOS_ALLOWED :VideoManager#end
 	{
 		#if VIDEOS_ALLOWED
+		var filepath:String = Paths.video(name);
+		var video:VideoManager = new VideoManager();
 		inCutscene = true;
 
-		var filepath:String = Paths.video(name);
-		#if sys
-		if(!FileSystem.exists(filepath))
-		#else
-		if(!OpenFlAssets.exists(filepath))
-		#end
-		{
+		if(#if MODS_ALLOWED !FileSystem.exists(filepath) #else !Assets.exists(filepath) #end) {
 			FlxG.log.warn('Couldnt find video file: ' + name);
 			startAndEnd();
-			return;
+			return null;
 		}
 
-		var video:VideoHandler = new VideoHandler();
-			#if (hxCodec >= "3.0.0")
-			// Recent versions
-			video.play(filepath);
-			video.onEndReached.add(function()
-			{
-				video.dispose();
-				startAndEnd();
-				return;
-			}, true);
-			#else
-			// Older versions
-			video.playVideo(filepath);
-			video.finishCallback = function()
-			{
-				startAndEnd();
-				return;
-			}
-			#end
+		video.startVideo(filepath);
+		video.onVideoEnd.add(function(){
+			startAndEnd();
+			return;
+		});
+
+		return video;
 		#else
-		FlxG.log.warn('Platform not supported!');
+		FlxG.log.warn('Platform not supported for video play back!');
 		startAndEnd();
 		return;
 		#end
@@ -1582,6 +1561,13 @@ class PlayState extends MusicBeatState
 			FlxTimer.globalManager.forEach(function(tmr:FlxTimer) if(!tmr.finished) tmr.active = true);
 			FlxTween.globalManager.forEach(function(twn:FlxTween) if(!twn.finished) twn.active = true);
 
+			#if VIDEOS_ALLOWED
+			if(videoSprites.length > 0)
+			for(video in videoSprites)
+				if(video.exists)
+				video.paused = false;
+			#end
+
 			paused = false;
 			callOnScripts('onResume');
 			resetRPC(startTimer != null && startTimer.finished);
@@ -1880,6 +1866,13 @@ class PlayState extends MusicBeatState
 		persistentDraw = true;
 		paused = true;
 
+		#if VIDEOS_ALLOWED
+		if(videoSprites.length > 0)
+			for(video in videoSprites)
+				if(video.exists)
+					video.paused = true;
+		#end
+
 		if(FlxG.sound.music != null) {
 			FlxG.sound.music.pause();
 			vocals.pause();
@@ -1952,6 +1945,13 @@ class PlayState extends MusicBeatState
 				#if LUA_ALLOWED
 				modchartTimers.clear();
 				modchartTweens.clear();
+				#end
+
+				#if VIDEOS_ALLOWED
+				// i assume it's better removing the thing on gameover
+				if(videoSprites.length > 0)
+					for(video in videoSprites)
+						removeVideoSprite(video);
 				#end
 
 				openSubState(new GameOverSubstate());
@@ -3054,6 +3054,20 @@ class PlayState extends MusicBeatState
 		notes.remove(note, true);
 		note.destroy();
 	}
+
+	#if VIDEOS_ALLOWED
+	public function removeVideoSprite(video:VideoSpriteManager):Void {
+		if(members.contains(video))
+			remove(video, true);
+		else {
+			forEachOfType(FlxSpriteGroup, function(group:FlxSpriteGroup){
+				if(group.members.contains(video))
+					group.remove(video, true);
+			});
+		}
+		video.altDestroy();
+	}
+	#end
 
 	public function spawnNoteSplashOnNote(note:Note) {
 		if(note != null) {
