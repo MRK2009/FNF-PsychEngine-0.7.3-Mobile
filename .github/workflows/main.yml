@@ -15,7 +15,7 @@ jobs:
             artifactPath: export\release\windows\bin\*
           - name: Linux
             os: ubuntu-22.04
-            buildArgs: linux
+            buildArgs: "linux -D NO_PRECOMPILED_HEADERS"
             artifactName: linuxBuild
             artifactPath: export/release/linux/bin/*
           - name: macOS
@@ -25,7 +25,7 @@ jobs:
             artifactPath: export/release/macos/bin/*
           - name: Android
             os: macos-15
-            buildArgs: android
+            buildArgs: "android -D DISABLED_MACRO_SUPERLATIVE"
             artifactName: androidBuild
             artifactPath: "export/release/android/bin/app/build/outputs/apk/release/*.apk"
           - name: iOS
