@@ -121,6 +121,7 @@ class MobileData
 			button.label.color = data.arrowRGB[i][0];
 			button.label.updateColorTransform();
 		}
+		
 		return buttonsInstance;
 	}
 
