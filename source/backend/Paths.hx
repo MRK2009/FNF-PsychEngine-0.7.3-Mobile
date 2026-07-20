@@ -336,7 +336,7 @@ class Paths
 			for(mod in Mods.getGlobalMods())
 				if (FileSystem.exists(mods('$mod/$key')))
 					return true;
-				#if (android || linux)
+				#if linux
 				else if (FileSystem.exists(findFile('$mod/$key')))
 					return true;
 				#end
@@ -346,7 +346,7 @@ class Paths
 			
 			if (FileSystem.exists(mods('$key')))
 				return true;
-			#if (android || linux)
+			#if linux
 			else if (FileSystem.exists(findFile(key)))
 				return true;
 			#end
@@ -550,7 +550,7 @@ class Paths
 			var fileToCheck:String = mods(mod + '/' + key);
 			if(FileSystem.exists(fileToCheck))
 				return fileToCheck;
-			#if (android || linux)
+			#if linux
 			else
 			{
 				var newPath:String = findFile(key);
