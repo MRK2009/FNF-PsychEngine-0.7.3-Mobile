@@ -1341,24 +1341,19 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "startVideo", function(videoFile:String) {
 			#if VIDEOS_ALLOWED
-			if (FileSystem.exists(Paths.video(videoFile)))
-			{
-				cast(game, PlayState).startVideo(videoFile);
+			if(FileSystem.exists(Paths.video(videoFile))) {
+				game.startVideo(videoFile);
 				return true;
-			}
-			else
-			{
+			} else {
 				luaTrace('startVideo: Video file not found: ' + videoFile, false, false, FlxColor.RED);
 			}
 			return false;
+
 			#else
-			if (cast(game, PlayState).endingSong)
-			{
-				cast(game, PlayState).endSong();
-			}
-			else
-			{
-				cast(game, PlayState).startCountdown();
+			if(game.endingSong) {
+				game.endSong();
+			} else {
+				game.startCountdown();
 			}
 			return true;
 			#end
