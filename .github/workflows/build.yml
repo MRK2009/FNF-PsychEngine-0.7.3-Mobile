@@ -57,7 +57,7 @@ jobs:
         run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
 
       - name: Compile
-        run: haxelib run lime build ${{ inputs.buildArgs }} -D DISABLED_MACRO_SUPERLATIVE -D NO_PRECOMPILED_HEADERS
+        run: haxelib run lime build ${{ inputs.buildArgs }}
 
       - name: Make IPA
         if: inputs.name == 'iOS'
