@@ -51,11 +51,7 @@ class FlxShader extends OriginalFlxShader
 		@:privateAccess
 		var gl = __context.gl;
 
-		#if lime_opengles
-		var prefix = "#version 300 es\n";
-		#else
-		var prefix = "#version 330\n";
-		#end
+		var prefix = '';
 
 		#if (js && html5)
 		prefix += (precisionHint == FULL ? "precision mediump float;\n" : "precision lowp float;\n");
